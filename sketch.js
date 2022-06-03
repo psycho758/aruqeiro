@@ -49,10 +49,10 @@ function draw() {
     if (playerArrows[i] !== undefined) {
       playerArrows[i].display();
 
-       var board1Collision = Matter.SAT.collides(
+      var board1Collision = Matter.SAT.collides(
         board1.body,
         playerArrows[i].body
-      ); 
+      );
 
       var board2Collision = Matter.SAT.collides(
         board2.body,
@@ -69,6 +69,8 @@ function draw() {
       if (posX > width || posY > height) {
         if (!playerArrows[i].isRemoved) {
           playerArrows[i].remove(i);
+        } else {
+          playerArrows[i].trajectory = [];
         }
       }
     }
@@ -88,7 +90,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === 39) {
+  if (keyCode === 32) {
     if (numberOfArrows > 0) {
       var posX = playerArcher.body.position.x;
       var posY = playerArcher.body.position.y;
@@ -96,6 +98,8 @@ function keyPressed() {
 
       var arrow = new PlayerArrow(posX, posY, 100, 10, angle);
 
+      arrow.trajectory = [];
+      
       Matter.Body.setAngle(arrow.body, angle);
       playerArrows.push(arrow);
       numberOfArrows -= 1;
@@ -104,7 +108,7 @@ function keyPressed() {
 }
 
 function keyReleased() {
-  if (keyCode === 39) {
+  if (keyCode === 32) {
     if (playerArrows.length) {
       var angle = playerArcher.body.angle;
       playerArrows[playerArrows.length - 1].shoot(angle);
